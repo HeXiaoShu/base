@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: dev
+    #active: prod
+
+  servlet:
+    multipart:
+      max-request-size: 2MB
+      max-file-size: 2MB
+
+  #本地缓存
+  cache:
+    type: caffeine
+    caffeine:
+      spec: initialCapacity=10,maximumSize=200,expireAfterWrite=30s
+
+mybatis:
+  mapper-locations: classpath:xml/*.xml   #xml扫描
+  type-aliases-package: com.model  #resultType 实体类映射
+
+mapper:
+  mappers:
+    - tk.mybatis.mapper.common.Mapper
+  notEmpty: true
+
+#http://localhost:8080/doc.html
+
