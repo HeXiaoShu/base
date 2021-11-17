@@ -18,6 +18,8 @@ public enum DateOrder {
         this.order=order;
         this.message = message;
     }
+
+
     public Boolean getOrder() {return order;}
     public String getMessage() {return message;}
 

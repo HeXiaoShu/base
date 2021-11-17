@@ -1,14 +1,15 @@
 package com.controller;
 
 import com.common.Result;
-import com.github.pagehelper.PageInfo;
-import com.model.City;
-import com.service.CityService;
+import com.constant.DateOrder;
+import com.model.User;
+import com.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description
@@ -22,11 +23,12 @@ import javax.annotation.Resource;
 public class TestController {
 
     @Resource
-    private CityService cityService;
+    private UserService userService;
 
     @GetMapping
     public Result get(){
-        return Result.ok(null);
+        List<User> users = userService.getListEqual(new User().setStatus("1"),DateOrder.ASC);
+        return Result.ok(users);
     }
 
 

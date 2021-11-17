@@ -17,6 +17,8 @@ spring:
 mybatis:
   mapper-locations: classpath:xml/*.xml   #xml扫描
   type-aliases-package: com.model  #resultType 实体类映射
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 mapper:
   mappers:
@@ -24,4 +26,5 @@ mapper:
   notEmpty: true
 
 #http://localhost:8080/doc.html
-
+pagehelper:
+  helper-dialect: MYSQL

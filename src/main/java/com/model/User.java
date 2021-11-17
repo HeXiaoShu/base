@@ -23,7 +23,9 @@ public class User implements Serializable {
     private Long id;
 
     /** name */
-    private String name;
+    private String userName;
+
+    private String status;
 
     private Date createTime;
 

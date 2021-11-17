@@ -1,8 +1,7 @@
 package com.mapper;
 
-import com.model.City;
+import com.model.User;
 import com.tk.TkMapper;
-import com.model.Test;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @date 2020-11-28 18:11:57
  */
 @Repository
-public interface CityMapper extends TkMapper<City> {
+public interface UserMapper extends TkMapper<User> {
 
 }

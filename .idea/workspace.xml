@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac577755-3534-401c-a495-31fe5c161c73" name="Default Changelist" comment="" />
+    <list default="true" id="ac577755-3534-401c-a495-31fe5c161c73" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/constant/DateOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/constant/DateOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mapper/CityMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/model/City.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/model/Test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/CityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/impl/CityServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tk/TkServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tk/TkServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/util/TreeUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/TreeUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +30,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -31,6 +47,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1kuk0uNvo3mgzSMbJQl1L0xt4Av" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
@@ -39,17 +56,17 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../yl-pc" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../practice" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.config" />
-      <recent name="com.tk" />
+      <recent name="com.mapper" />
       <recent name="com.service.impl" />
       <recent name="com.service" />
-      <recent name="com.mapper" />
+      <recent name="com.config" />
+      <recent name="com.tk" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\java_project\base\src\main\resources" />
@@ -162,11 +179,27 @@
       <workItem from="1632198246329" duration="1203000" />
       <workItem from="1632452895888" duration="1198000" />
       <workItem from="1632889657007" duration="1863000" />
-      <workItem from="1636351744382" duration="11446000" />
+      <workItem from="1636351744382" duration="12090000" />
+      <workItem from="1636874730133" duration="1482000" />
+      <workItem from="1636881434274" duration="52000" />
+      <workItem from="1637150140725" duration="7981000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

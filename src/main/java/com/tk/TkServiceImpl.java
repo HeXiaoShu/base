@@ -3,12 +3,9 @@ package com.tk;
 import com.constant.DateOrder;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.model.User;
 import com.util.StringUtil;
-import tk.mybatis.mapper.common.BaseMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +15,12 @@ import java.util.Map;
  * @Date 2021/4/13
  * @modify
  */
-public class TkServiceImpl<T,B extends TkMapper<T>> implements TkService<T> {
-    @Resource
+public class TkServiceImpl<B extends TkMapper<T>,T> implements TkService<T> {
+
+
+    private static final String DATE_ORDER_NAME ="createTime";
+
+    @Autowired(required = false)
     private B baseMapper;
 
     @Override
@@ -29,23 +30,25 @@ public class TkServiceImpl<T,B extends TkMapper<T>> implements TkService<T> {
 
     @Override
     public T getOneByParam(T t) {
-        return baseMapper.selectOneByExample(t);
+        return baseMapper.selectOne(t);
     }
 
     @Override
     public List<T> getListEqual(T t, DateOrder dateOrder) {
         Example example=new Example(t.getClass());
         if (dateOrder.getOrder()){
-            example.orderBy("createTime").desc();
+            example.orderBy(DATE_ORDER_NAME).desc();
         }
-        return baseMapper.selectByExample(t);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(t);
+        return baseMapper.selectByExample(example);
     }
 
     @Override
     public List<T> getListLike(Map<String, Object> paraMap, DateOrder dateOrder, Class<T> c) {
         Example example=new Example(c);
         if (dateOrder.getOrder()){
-            example.orderBy("createTime").desc();
+            example.orderBy(DATE_ORDER_NAME).desc();
         }
         Example.Criteria criteria = example.createCriteria();
         if (!paraMap.isEmpty()){
@@ -62,9 +65,11 @@ public class TkServiceImpl<T,B extends TkMapper<T>> implements TkService<T> {
         PageHelper.startPage(curPage,pageSize);
         Example example=new Example(t.getClass());
         if (dateOrder.getOrder()){
-            example.orderBy("createTime").desc();
+            example.orderBy(DATE_ORDER_NAME).desc();
         }
-        List<T> list = baseMapper.selectByExample(t);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(t);
+        List<T> list = baseMapper.selectByExample(example);
         return new PageInfo<>(list);
     }
 
@@ -73,7 +78,7 @@ public class TkServiceImpl<T,B extends TkMapper<T>> implements TkService<T> {
         PageHelper.startPage(curPage,pageSize);
         Example example=new Example(c);
         if (dateOrder.getOrder()){
-            example.orderBy("createTime").desc();
+            example.orderBy(DATE_ORDER_NAME).desc();
         }
         Example.Criteria criteria = example.createCriteria();
         if (!paraMap.isEmpty()){
