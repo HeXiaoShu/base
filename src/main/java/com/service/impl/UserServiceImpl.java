@@ -14,5 +14,4 @@ import org.springframework.stereotype.Service;
 @Service("userService")
 public class UserServiceImpl extends TkServiceImpl<UserMapper,User> implements UserService {
 
-
 }
