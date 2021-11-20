@@ -25,6 +25,10 @@ public class User implements Serializable {
     /** name */
     private String userName;
 
+    private String passWord;
+
+    private String phone;
+
     private String status;
 
     private Date createTime;

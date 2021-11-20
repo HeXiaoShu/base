@@ -6,8 +6,13 @@ import com.github.pagehelper.PageInfo;
 import com.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.persistence.Id;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @Description
@@ -16,7 +21,6 @@ import java.util.Map;
  * @modify
  */
 public class TkServiceImpl<B extends TkMapper<T>,T> implements TkService<T> {
-
 
     private static final String DATE_ORDER_NAME ="createTime";
 
@@ -102,8 +106,28 @@ public class TkServiceImpl<B extends TkMapper<T>,T> implements TkService<T> {
     }
 
     @Override
+    public void insertBatch(List<T> t) {
+        t.forEach(e->baseMapper.insertList(t));
+    }
+
+    @Override
     public int deleteById(Long id) {
         return baseMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteByIdBatch(List<Long> ids, Class<T> c) {
+        AtomicReference<String> idName= new AtomicReference<>("");
+        Field[] declaredFields = c.getDeclaredFields();
+        Arrays.stream(declaredFields).forEach(f->{
+            if (f.isAnnotationPresent(Id.class)){
+                idName.set(f.getName());
+            }
+        });
+        Example example=new Example(c);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andIn(idName.get(),ids);
+        return baseMapper.deleteByExample(example);
     }
 
     @Override

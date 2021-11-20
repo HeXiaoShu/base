@@ -19,10 +19,10 @@ public class TreeUtil {
      * 列表型,层次结构
      * @param list
      */
-    public static void createTreeTable(List<Test> list){
+    /*public static void createTreeTable(List<Test> list){
         TreeMap<Long, List<Test>> collect = list.parallelStream().collect(Collectors.groupingBy(Test::getParentId, TreeMap::new, Collectors.toList()));
         System.out.println(collect);
-    }
+    }*/
 
 
     /**
