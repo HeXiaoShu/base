@@ -25,6 +25,7 @@ mapper:
     - tk.mybatis.mapper.common.Mapper
   notEmpty: true
 
+
 #http://localhost:8080/doc.html
 pagehelper:
   helper-dialect: MYSQL

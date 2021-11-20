@@ -27,9 +27,7 @@ public class TestController {
 
     @GetMapping
     public Result get(){
-        User user = new User().setPassWord("123");
-        int i = userService.deleteEqual(user);
-        return Result.ok(i);
+        return Result.ok(1);
     }
 
 

@@ -107,7 +107,7 @@ public class TkServiceImpl<B extends TkMapper<T>,T> implements TkService<T> {
 
     @Override
     public void insertBatch(List<T> t) {
-        t.forEach(e->baseMapper.insertList(t));
+        baseMapper.insertBatchAllCols(t);
     }
 
     @Override
