@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Description
@@ -26,7 +28,11 @@ public class TestController {
     private UserService userService;
 
     @GetMapping
-    public Result get(){
+    public Result get() throws ExecutionException, InterruptedException {
+        System.out.println("开始...");
+        CompletableFuture<Integer> demo = userService.asyncDemo(new User().setId(1L).setUserName("小树1"));
+        //demo.get(); 取值阻塞
+        System.out.println("结束...");
         return Result.ok(1);
     }
 
