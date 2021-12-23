@@ -1,15 +1,13 @@
 package com.controller;
 
 import com.common.Result;
-import com.constant.DateOrder;
 import com.model.User;
-import com.service.UserService;
+import com.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
-import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -25,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 public class TestController {
 
     @Resource
-    private UserService userService;
+    private IUserService userService;
 
     @GetMapping
     public Result get() throws ExecutionException, InterruptedException {
@@ -34,6 +32,12 @@ public class TestController {
         //demo.get(); 取值阻塞
         System.out.println("结束...");
         return Result.ok(1);
+    }
+
+    @GetMapping("/task")
+    public Result task(){
+        Object o = userService.taskDemo();
+        return Result.ok(o);
     }
 
 
