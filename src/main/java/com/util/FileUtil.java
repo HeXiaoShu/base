@@ -1,9 +1,13 @@
 package com.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description 文件处理工具类
@@ -11,6 +15,7 @@ import java.util.List;
  * @Date 2021/11/9
  * @modify
  */
+@Slf4j
 public class FileUtil {
 
     /**
@@ -57,6 +62,133 @@ public class FileUtil {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 文件切割 / FileChannel
+     * 将文件切割到，文件名的目录下
+     * split(file, 1024 * 1024 * 200)
+     * @param file      切割文件
+     * @param splitSize 切割大小 byte
+     */
+    public static Boolean split(File file,long splitSize){
+        boolean flag=true;
+        long start = System.currentTimeMillis();
+        String fileName = file.getName();
+        String outDir = fileName.substring(0,fileName.indexOf("."));
+        long length = file.length();
+        System.out.println("当前文件大小:"+length);
+        System.out.println("切割值:"+splitSize);
+        BigDecimal a = new BigDecimal(length);
+        BigDecimal b = new BigDecimal(splitSize);
+        BigDecimal splitCount = a.divide(b).setScale(0, RoundingMode.HALF_DOWN);
+        int splitNum = splitCount.intValue();
+        System.out.println("切割块数:"+splitNum);
+        long outByte = length - (splitCount.multiply(b).longValue());
+        System.out.println("剩余大小："+outByte);
+        String absolutePath = file.getAbsolutePath();
+        System.out.println("开始切割文件:"+absolutePath);
+        File parentFile = file.getParentFile();
+        String outPath=parentFile.getAbsolutePath()+File.separator+outDir;
+        File outPathFile = new File(outPath);
+        boolean mkdirs = outPathFile.mkdirs();
+        if (mkdirs){
+            System.out.println("输出路径:"+outPath);
+        }else {
+            System.out.println("输出路径:"+outPath+"创建失败");
+        }
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            FileChannel inputChannel = fis.getChannel();
+            //切割指针
+            long startPoint = 0;
+            for (int i = 1; i <= splitNum; i++) {
+                startPoint = toSplit(splitSize, fileName, outPath, inputChannel, startPoint, i);
+            }
+            int lastCount=splitNum+1;
+            toSplit(splitSize, fileName, outPath, inputChannel, startPoint, lastCount);
+        }catch (Exception e){
+            flag=false;
+            e.printStackTrace();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("耗时："+(end-start)/1000+" 秒");
+        return flag;
+    }
+
+    private static long toSplit(long splitSize, String fileName, String outDir, FileChannel inputChannel, long startPoint, int i) throws IOException {
+        FileOutputStream fos;
+        FileChannel outputChannel;
+        String splitFileName = outDir+File.separator+ fileName +"_"+ i;
+        File splitFile = new File(splitFileName);
+        boolean newFile = splitFile.createNewFile();
+        if (newFile){
+            System.out.println(splitFile.getAbsolutePath()+"已生成..");
+        }
+        fos = new FileOutputStream(splitFileName);
+        outputChannel = fos.getChannel();
+        inputChannel.transferTo(startPoint, splitSize, outputChannel);
+        //移动指针
+        startPoint += splitSize;
+        outputChannel.close();
+        fos.close();
+        return startPoint;
+    }
+
+    /**
+     * 文件合并
+     * @param dir 切块文件名目录
+     * @param out 输出文件
+     */
+    public static Boolean merge(File dir,File out){
+        if (!dir.isDirectory()){
+            return false;
+        }
+        System.out.println("合并文件目录："+dir);
+        File[] files = dir.listFiles();
+        if (files==null||files.length==0){
+            return false;
+        }
+        String name = files[0].getName();
+        String outDir = name.substring(0,name.indexOf("_")+1);
+        System.out.println("合并文件前缀："+outDir);
+        LinkedList<FileInputStream> splitFiles = new LinkedList<>();
+        for(int i=1; i<files.length+1; i++){
+            try {
+                String curFile = dir + File.separator + outDir + i;
+                System.out.println("处理文件："+curFile);
+                splitFiles.add(new FileInputStream(curFile));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        try {
+            Enumeration<FileInputStream> en = Collections.enumeration(splitFiles);
+            SequenceInputStream sis = new SequenceInputStream(en);
+            FileOutputStream fos = new FileOutputStream(out);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = sis.read(buf)) != -1) {
+                fos.write(buf,0,len);
+            }
+            fos.close();
+            sis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        System.out.println("文件输出成功: "+out.getAbsolutePath());
+        return true;
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        /*File file = new File("E:\\鹰眼.mp4");
+        Boolean split = split(file, 1024 * 1024 * 50);
+        System.out.println(split);*/
+        Boolean merge = merge(new File("E:\\鹰眼"), new File("E:\\BaiduNetdiskDownload\\鹰眼.mp4"));
+        System.out.println("合并完成："+merge);
     }
 
 
