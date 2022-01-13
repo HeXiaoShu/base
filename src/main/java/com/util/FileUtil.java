@@ -1,10 +1,15 @@
 package com.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -180,6 +185,57 @@ public class FileUtil {
         }
         System.out.println("文件输出成功: "+out.getAbsolutePath());
         return true;
+    }
+
+    /**
+     * 浏览器文件下载
+     * @param targetFile  目标文件
+     * @param response    response
+     */
+    public static void browserDownLoad(File targetFile, HttpServletResponse response){
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            response.reset();
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(targetFile.getName(), "UTF-8"));
+            response.addHeader("Content-Length", "" + targetFile.length());
+            response.setContentType("application/octet-stream");
+            out = new BufferedOutputStream(response.getOutputStream());
+            in = new BufferedInputStream(new FileInputStream(targetFile));
+            IOUtils.copy(in, out);
+            out.flush();
+        } catch (Exception e) {
+            log.error("客户端断开了链接");
+        } finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+    }
+
+    /**
+     * 通过资源路径下载文件
+     * @param targetUrl  目标路径
+     * @param targetFile 输出文件
+     */
+    public static Boolean urlDownLoad(String targetUrl,File targetFile){
+        OutputStream out = null;
+        InputStream in = null;
+        boolean flag=true;
+        try {
+            URL url = new URL(targetUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+            in =  new BufferedInputStream(urlConnection.getInputStream());
+            out=  new BufferedOutputStream(new FileOutputStream(targetFile));
+            IOUtils.copy(in, out);
+            out.flush();
+        }catch (Exception e){
+            flag=false;
+            log.error("下载异常",e);
+        }finally {
+            IOUtils.closeQuietly(in);
+            IOUtils.closeQuietly(out);
+        }
+        return flag;
     }
 
 

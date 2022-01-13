@@ -2,6 +2,7 @@ package com.controller;
 
 import com.common.Result;
 import com.model.User;
+import com.service.ISomeService;
 import com.service.IUserService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,8 @@ public class TestController {
 
     @Resource
     private IUserService userService;
+    @Resource
+    private ISomeService someService;
 
     @GetMapping
     public Result get() throws ExecutionException, InterruptedException {
@@ -37,6 +40,7 @@ public class TestController {
     @GetMapping("/task")
     public Result task(){
         Object o = userService.taskDemo();
+        someService.toDo(new User().setUserName("小树").setId(1L),1L,new User().setUserName("小树").setId(1L));
         return Result.ok(o);
     }
 
