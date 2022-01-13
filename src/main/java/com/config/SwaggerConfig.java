@@ -12,7 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 
 /**
- * @Description
+ * @Description 建议，要业务要求做接口文档分组.
  * @Author Hexiaoshu
  * @Date 2021/5/2
  * @modify

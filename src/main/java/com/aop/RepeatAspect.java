@@ -1,12 +1,15 @@
 package com.aop;
 
 import com.common.Result;
+import com.github.benmanes.caffeine.cache.Cache;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
@@ -17,19 +20,30 @@ import java.util.Objects;
  **/
 @Aspect
 @Component
-public class CheckParamAspect {
+public class RepeatAspect {
 
-    @Pointcut("@annotation(com.annotation.CheckParam)")
+    @Resource
+    Cache<String, Object> caffeineCache;
+
+    @Pointcut("@annotation(com.annotation.Repeat)")
     public void checkParam(){}
 
     @Around(value = "checkParam()")
     public Object doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] args = joinPoint.getArgs();
-        BindingResult validResult = (BindingResult)args[args.length-1];
-        if (validResult.hasErrors()) {
-            return Result.error(Objects.requireNonNull(validResult.getFieldError()).getDefaultMessage());
+        if (checkRepeat()){
+            return Result.error("重复提交");
         }
         return joinPoint.proceed();
+    }
+
+    private boolean checkRepeat(){
+        Object repeat = caffeineCache.getIfPresent("repeat");
+        if (repeat==null){
+            caffeineCache.put("repeat",1);
+        }else {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tk;
 
+import tk.mybatis.mapper.common.IdsMapper;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -9,5 +10,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @author: he
  * @create: 2020-01-14 18:29
  **/
-public interface TkMapper<T> extends Mapper<T>, MySqlMapper<T>,SpecialBatchMapper<T> {
+public interface TkMapper<T> extends Mapper<T>, MySqlMapper<T>,SpecialBatchMapper<T>, IdsMapper<T> {
 }

@@ -77,10 +77,10 @@ public interface TkService <T> {
 
     /**
      * 批量新增, 属性为null时，会插入null数据，注意设置
-     * @param t 集合
-     * @return int
+     * @param t 数据集合
+     * @return Integer 添加数量
      */
-    void insertBatch(List<T> t);
+    Integer insertBatch(List<T> t);
 
     /**
      * 删除

@@ -1,16 +1,15 @@
 package com.controller;
 
 import com.common.Result;
+import com.constant.DateOrder;
 import com.model.User;
-import com.service.ISomeService;
 import com.service.IUserService;
+import com.util.SnowflakeIdWorker;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 /**
  * @Description
@@ -22,30 +21,26 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/test")
 @RestController
 public class TestController {
-
     @Resource
-    private IUserService userService;
-    @Resource
-    private ISomeService someService;
+    IUserService userService;
 
     @GetMapping
-    public Result get() throws ExecutionException, InterruptedException {
-        System.out.println("开始...");
-        CompletableFuture<Integer> demo = userService.asyncDemo(new User().setId(1L).setUserName("小树1"));
-        //demo.get(); 取值阻塞
-        System.out.println("结束...");
-        return Result.ok(1);
+    public Result test(){
+        return Result.ok(userService.getAll());
     }
 
-    @GetMapping("/task")
-    public Result task(){
-        Object o = userService.taskDemo();
-        someService.toDo(new User().setUserName("小树").setId(1L),1L,new User().setUserName("小树").setId(1L));
-        return Result.ok(o);
+    @GetMapping("/page")
+    public Result page(){
+        User user = new User().setStatus("1");
+        return Result.ok(userService.getListEqualPage(user, DateOrder.DESC,1,2));
     }
 
-
-
+    @PostMapping
+    public Result addBatch(@RequestBody List<User> users){
+        users.forEach(e->e.setId(SnowflakeIdWorker.id()));
+        Integer count = userService.insertBatch(users);
+        return Result.ok("添加成功,数据："+count);
+    }
 
 
 

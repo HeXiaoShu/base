@@ -1,23 +1,28 @@
 package com.tk;
-
+ 
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.MapperTemplate;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
-
+ 
 import java.util.Set;
-
+ 
 /**
  * 自定义mapper方法，主要是解决批量插入/更新问题(主键字段也插入)
+ * 
+ * @author gzy
+ * @version : 1.0
+ * @since : 2017年1月5日 下午9:06:35
  */
+ 
 public class SpecialBatchProvider  extends MapperTemplate {
-
+ 
 	public SpecialBatchProvider(Class<?> mapperClass, MapperHelper mapperHelper) {
 		super(mapperClass, mapperHelper);
 	}
-
+ 
 	public String insertListUseAllCols(MappedStatement ms) {
         Class<?> entityClass = getEntityClass(ms);
         //开始拼sql
@@ -39,5 +44,5 @@ public class SpecialBatchProvider  extends MapperTemplate {
         sql.append("</foreach>");
         return sql.toString();
 	}
-
+ 
 }

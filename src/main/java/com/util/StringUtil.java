@@ -241,14 +241,13 @@ public class StringUtil {
 
 
     /**
-     * 拼接 % %,模糊查询参数
+     * 拼接 ..%,模糊查询参数
      * @param str 拼接字符
      * @return
      */
     public static String appendLike(String str){
         if (isNotEmpty(str)){
             StringBuilder builder = new StringBuilder(str);
-            builder.insert(0,"%");
             builder.insert(builder.length(),"%");
             return builder.toString();
         }else {

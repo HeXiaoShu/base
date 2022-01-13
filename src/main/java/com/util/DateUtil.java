@@ -13,8 +13,6 @@ import java.util.Date;
 
 /**
  * @author heyonghao
- * @Title: DateUtil
- * @ProjectName xlkoffical
  * @Description:  常用时间工具类
  * @date 2019/7/411:57
  */

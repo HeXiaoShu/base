@@ -1,3 +1,8 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
 spring:
   profiles:
     active: dev
@@ -8,15 +13,37 @@ spring:
       max-request-size: 2MB
       max-file-size: 2MB
 
-  #本地缓存
-  cache:
-    type: caffeine
-    caffeine:
-      spec: initialCapacity=10,maximumSize=200,expireAfterWrite=30s
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 1                        # 初始化大小，最小，最大
+    minIdle: 3
+    maxActive: 20
+    maxWait: 60000                        # 配置获取连接等待超时的时间
+    timeBetweenEvictionRunsMillis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    minEvictableIdleTimeMillis: 30000     # 配置一个连接在池中最小生存的时间，单位是毫秒
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true          # 打开PSCache，并且指定每个连接上PSCache的大小
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,slf4j              # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    useGlobalDataSourceStat: true         # 合并多个DruidDataSource的监控数据
+
+  redis:
+    lettuce:
+      pool:
+        max-active: 8       #最大链接数
+        max-wait: 1000      #最大阻塞等待时间
+        max-idle: 8         #最大空闲链接
+        min-idle: 0
+      shutdown-timeout: 100 #关闭超时时间
 
 mybatis:
-  mapper-locations: classpath:xml/*.xml   #xml扫描
-  type-aliases-package: com.model  #resultType 实体类映射
+  mapper-locations: classpath:xml/*.xml
+  type-aliases-package: com.model
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
@@ -25,7 +52,19 @@ mapper:
     - tk.mybatis.mapper.common.Mapper
   notEmpty: true
 
-
-#http://localhost:8080/doc.html
 pagehelper:
   helper-dialect: MYSQL
+
+# .*/swagger-ui/   /doc.html
+springfox:
+  documentation:
+    enabled: true
+    auto-startup: true
+
+#接口文档配置
+knife4j:
+  basic:
+    enable: true
+    username: xiaoshu
+    password: 730730
+  production: true
